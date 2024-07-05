@@ -36,9 +36,19 @@ module.exports = {
     '@typescript-eslint',
     'react',
     'react-compiler',
+    'prettier',
   ],
   rules: {
     'react/react-in-jsx-scope': 0,
     'react-compiler/react-compiler': 'error',
+     'react/prefer-stateless-function': 'off',
+      'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: [
+          '**/vite.config.ts',
+        ],
+      },
+    ],
   },
 };
