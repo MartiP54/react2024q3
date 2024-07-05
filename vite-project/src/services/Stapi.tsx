@@ -14,6 +14,7 @@ interface AstronomicalObject {
 
 interface AstronomicalObjectsProps {
   query: string;
+  searchKey: number;
 }
 
 interface AstronomicalObjectsState {
@@ -33,13 +34,13 @@ export default class AstronomicalObjects extends React.Component<AstronomicalObj
   }
 
   componentDidMount() {
-    const { query } = this.props;
-    this.fetchData(query);
+    const savedQuery = localStorage.getItem('lastSearchQuery') || '';
+    this.fetchData(savedQuery);
   }
 
   componentDidUpdate(prevProps: AstronomicalObjectsProps) {
-    const { query } = this.props;
-    if (query !== prevProps.query) {
+    const { query, searchKey } = this.props;
+    if (searchKey !== prevProps.searchKey) {
       this.setState({ data: [], loading: true, error: null });
       this.fetchData(query);
     }
@@ -47,6 +48,7 @@ export default class AstronomicalObjects extends React.Component<AstronomicalObj
 
   fetchData = async (query: string) => {
     try {
+      localStorage.setItem('lastSearchQuery', query);
       const response = await fetch('http://stapi.co/api/v2/rest/astronomicalObject/search', {
         method: 'POST',
         headers: {

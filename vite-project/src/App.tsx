@@ -11,8 +11,9 @@ interface AppState {
 export default class App extends React.Component<object, AppState> {
   constructor(props: object) {
     super(props);
+    const savedQuery = localStorage.getItem('lastSearchQuery') || '';
     this.state = {
-      query: '',
+      query: savedQuery,
       searchKey: 0,
     };
   }
@@ -28,8 +29,8 @@ export default class App extends React.Component<object, AppState> {
     const { query, searchKey } = this.state;
     return (
       <>
-        <Header onSearch={this.handleSearch} />
-        <Main query={query} key={searchKey} />
+        <Header onSearch={this.handleSearch} initialQuery={query} />
+        <Main query={query} searchKey={searchKey} />
       </>
     );
   }

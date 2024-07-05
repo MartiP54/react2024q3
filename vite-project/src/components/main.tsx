@@ -4,14 +4,15 @@ import AstronomicalObjects from '../services/Stapi';
 
 interface MainProps {
   query: string;
+  searchKey: number;
 }
 
 export default class Main extends React.Component<MainProps> {
   render() {
-    const { query } = this.props;
+    const { query, searchKey } = this.props;
     return (
       <main className='main'>
-        <AstronomicalObjects query={query} />
+        <AstronomicalObjects query={query} searchKey={searchKey} />
       </main>
     )
   }

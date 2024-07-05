@@ -4,6 +4,7 @@ import Button from './Button/Button';
 
 interface HeaderProps {
   onSearch: (query: string) => void;
+  initialQuery: string;
 }
 
 interface HeaderState {
@@ -14,7 +15,7 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
   constructor(props: HeaderProps) {
     super(props);
     this.state = {
-      query: '',
+      query: props.initialQuery || '',
     };
   }
 
@@ -35,6 +36,6 @@ export default class Header extends React.Component<HeaderProps, HeaderState> {
         <Input value={query} onChange={this.handleInputChange} />
         <Button onClick={this.handleSearch} />
       </header>
-    )
+    );
   }
 }
