@@ -5,26 +5,32 @@ import Main from './components/main';
 
 interface AppState {
   query: string;
+  searchKey: number;
 }
+
 export default class App extends React.Component<object, AppState> {
   constructor(props: object) {
     super(props);
     this.state = {
       query: '',
+      searchKey: 0,
     };
   }
 
   handleSearch = (query: string) => {
-    this.setState({ query });
+    this.setState((prevState) => ({
+      query,
+      searchKey: prevState.searchKey + 1,
+    }));
   };
 
   render() {
-    const { query } = this.state;
+    const { query, searchKey } = this.state;
     return (
       <>
         <Header onSearch={this.handleSearch} />
-        <Main query={query} />
+        <Main query={query} key={searchKey} />
       </>
-    )
+    );
   }
 }

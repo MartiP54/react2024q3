@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from 'react';
 
 interface Location {
   uid: string;
@@ -40,15 +40,21 @@ export default class AstronomicalObjects extends React.Component<AstronomicalObj
   componentDidUpdate(prevProps: AstronomicalObjectsProps) {
     const { query } = this.props;
     if (query !== prevProps.query) {
+      this.setState({ data: [], loading: true, error: null });
       this.fetchData(query);
     }
   }
 
   fetchData = async (query: string) => {
-    this.setState({ loading: true, error: null });
-
     try {
-      const response = await fetch(`http://stapi.co/api/v2/rest/astronomicalObject/search?query=${query}`);
+      const response = await fetch('http://stapi.co/api/v2/rest/astronomicalObject/search', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `name=${query}`
+      });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -74,13 +80,17 @@ export default class AstronomicalObjects extends React.Component<AstronomicalObj
       <div>
         <h1>Astronomical Objects</h1>
         <div className="astronomical-objects-list">
-          {data.map((obj) => (
-            <div key={obj.uid} className="astronomical-object">
-              <h2>{obj.name}</h2>
-              <p>Type: {obj.astronomicalObjectType}</p>
-              <p>Location: {obj.location ? obj.location.name : 'Unknown'}</p>
-            </div>
-          ))}
+          {data.length === 0 ? (
+            <p>No results found</p>
+          ) : (
+            data.map((obj) => (
+              <div key={obj.uid} className="astronomical-object">
+                <h2>{obj.name}</h2>
+                <p>Type: {obj.astronomicalObjectType}</p>
+                <p>Location: {obj.location ? obj.location.name : 'Unknown'}</p>
+              </div>
+            ))
+          )}
         </div>
       </div>
     );
