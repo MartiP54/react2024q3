@@ -34,7 +34,7 @@ export default class AstronomicalObjects extends React.Component<AstronomicalObj
   }
 
   componentDidMount() {
-    const savedQuery = localStorage.getItem('lastSearchQuery') || '';
+    const savedQuery = localStorage.getItem('lastSearchMarti') || '';
     this.fetchData(savedQuery);
   }
 
@@ -48,7 +48,7 @@ export default class AstronomicalObjects extends React.Component<AstronomicalObj
 
   fetchData = async (query: string) => {
     try {
-      localStorage.setItem('lastSearchQuery', query);
+      localStorage.setItem('lastSearchMarti', query);
       const response = await fetch('http://stapi.co/api/v2/rest/astronomicalObject/search', {
         method: 'POST',
         headers: {

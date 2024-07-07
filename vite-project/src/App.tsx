@@ -2,6 +2,8 @@ import './App.css';
 import React from 'react'; 
 import Header from './components/header';
 import Main from './components/main';
+import ErrorBoundary from './components/errorBoundary';
+
 
 interface AppState {
   query: string;
@@ -11,9 +13,8 @@ interface AppState {
 export default class App extends React.Component<object, AppState> {
   constructor(props: object) {
     super(props);
-    const savedQuery = localStorage.getItem('lastSearchQuery') || '';
     this.state = {
-      query: savedQuery,
+      query: localStorage.getItem('lastSearchMarti') || '',
       searchKey: 0,
     };
   }
@@ -23,15 +24,22 @@ export default class App extends React.Component<object, AppState> {
       query,
       searchKey: prevState.searchKey + 1,
     }));
+    localStorage.setItem('lastSearchMarti', query);
   };
 
   render() {
     const { query, searchKey } = this.state;
     return (
-      <>
-        <Header onSearch={this.handleSearch} initialQuery={query} />
-        <Main query={query} searchKey={searchKey} />
-      </>
+      <div className="app_wrapper">
+        <ErrorBoundary fallback={<div>Sorry for the inconvenience. An error occurred, try loading the page again.</div>}>
+          {(setError) => (
+            <>
+              <Header onSearch={this.handleSearch} initialQuery={query} onError={setError} />
+              <Main query={query} searchKey={searchKey} />
+            </>
+          )}
+        </ErrorBoundary>
+        </div>
     );
   }
 }
