@@ -30,7 +30,7 @@ export default class App extends React.Component<object, AppState> {
   render() {
     const { query, searchKey } = this.state;
     return (
-      <div className="app_wrapper">
+      <div className="app_wrar">
         <ErrorBoundary fallback={<div>Sorry for the inconvenience. An error occurred, try loading the page again.</div>}>
           {(setError) => (
             <>
