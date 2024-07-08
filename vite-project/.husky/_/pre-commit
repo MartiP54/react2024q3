@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname "$0")/husky.sh"
-cd ./vite-project && npx lint-staged
-
-
-
