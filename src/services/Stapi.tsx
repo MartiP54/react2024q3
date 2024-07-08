@@ -23,6 +23,10 @@ interface AstronomicalObjectsState {
   error: string | null;
 }
 
+interface AstronomicalObjectResponse {
+  astronomicalObjects: AstronomicalObject[];
+}
+
 export default class AstronomicalObjects extends React.Component<AstronomicalObjectsProps, AstronomicalObjectsState> {
   constructor(props: AstronomicalObjectsProps) {
     super(props);
@@ -33,16 +37,16 @@ export default class AstronomicalObjects extends React.Component<AstronomicalObj
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const savedQuery = localStorage.getItem('lastSearchMarti') || '';
-    this.fetchData(savedQuery);
+    await this.fetchData(savedQuery);
   }
 
-  componentDidUpdate(prevProps: AstronomicalObjectsProps) {
+  async componentDidUpdate(prevProps: AstronomicalObjectsProps) {
     const { query, searchKey } = this.props;
     if (searchKey !== prevProps.searchKey) {
       this.setState({ data: [], loading: true, error: null });
-      this.fetchData(query);
+      await this.fetchData(query);
     }
   }
 
@@ -60,7 +64,7 @@ export default class AstronomicalObjects extends React.Component<AstronomicalObj
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const result = await response.json();
+      const result = await response.json() as AstronomicalObjectResponse;;
       this.setState({ data: result.astronomicalObjects, loading: false });
     } catch (error) {
       this.setState({ error: (error as Error).message, loading: false });
