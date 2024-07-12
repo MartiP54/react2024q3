@@ -31,7 +31,6 @@ export default function AstronomicalObjects ({ searchKey }: AstronomicalObjectsP
     const fetchData = async (searchQuery: string) => {
       try {
         savedQueryRef.current = searchQuery;
-        localStorage.setItem('lastSearchMarti', searchQuery);
         const response = await fetch('http://stapi.co/api/v2/rest/astronomicalObject/search', {
           method: 'POST',
           headers: {
