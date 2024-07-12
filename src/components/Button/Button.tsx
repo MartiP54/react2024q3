@@ -3,16 +3,13 @@ import './Button.css';
 
 
 interface ButtonProps {
-  onClick: () => void;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export default class Button extends React.Component<ButtonProps> {
-  render() {
-    const { onClick } = this.props;
-    return (
-      <button className='button' type='button' onClick={onClick}>
-        Search
-      </button>
-    )
-  }
+export default function Button({ onClick }: ButtonProps) {
+  return (
+    <button className='button' type='button' onClick={onClick}>
+      Search
+    </button>
+  );
 }

@@ -5,9 +5,7 @@ interface InputProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default class Input extends React.Component<InputProps> {
-  render() {
-    const { value, onChange } = this.props;
+export default function Input ({ value, onChange }: InputProps) {
     return (
       <input 
         className='input' 
@@ -17,5 +15,4 @@ export default class Input extends React.Component<InputProps> {
         onChange={onChange}
       />
     )
-  }
 }
