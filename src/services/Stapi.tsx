@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 
@@ -16,6 +16,7 @@ interface AstronomicalObject {
 
 interface AstronomicalObjectsProps {
   searchKey: number;
+  searchQuery: string;
 }
 
 interface AstronomicalObjectResponse {
@@ -28,11 +29,11 @@ interface AstronomicalObjectResponse {
   };
 }
 
-export default function AstronomicalObjects({ searchKey }: AstronomicalObjectsProps) {
+export default function AstronomicalObjects({ searchKey, searchQuery }: AstronomicalObjectsProps) {
   const [data, setData] = useState<AstronomicalObject[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const savedQueryRef = useRef<string>('');
+  const [totalPages, setTotalPages] = useState<number>(0);
   const location = useLocation();
 
   const getPageNumber = useCallback(() => {
@@ -43,22 +44,22 @@ export default function AstronomicalObjects({ searchKey }: AstronomicalObjectsPr
   const currentPage = useMemo(() => getPageNumber(), [getPageNumber]);
 
   useEffect(() => {
-    const fetchData = async (searchQuery: string, page: number) => {
+    const fetchData = async (searchQueryUse: string, page: number) => {
       try {
-        savedQueryRef.current = searchQuery;
-        const response = await fetch('http://stapi.co/api/v2/rest/astronomicalObject/search', {
+        const response = await fetch(`http://stapi.co/api/v2/rest/astronomicalObject/search?pageNumber=${page - 1}`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          body: `name=${searchQuery}&pageNumber=${page - 1}`
+          body: `name=${searchQueryUse}`
         });
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const result = await response.json() as AstronomicalObjectResponse;
         setData(result.astronomicalObjects);
+        setTotalPages(result.page.totalPages);
         setLoading(false);
       } catch (fetchError) {
         setError((fetchError as Error).message);
@@ -66,10 +67,9 @@ export default function AstronomicalObjects({ searchKey }: AstronomicalObjectsPr
       }
     };
 
-    const savedQuery = localStorage.getItem('lastSearchMarti') || '';
-
     const asyncFetchData = async () => {
-      await fetchData(savedQuery, currentPage);
+      setLoading(true);
+      await fetchData(searchQuery, currentPage);
     };
 
     asyncFetchData().catch((err: unknown) => {
@@ -81,7 +81,7 @@ export default function AstronomicalObjects({ searchKey }: AstronomicalObjectsPr
       setLoading(false);
     });
 
-  }, [searchKey, location.search, currentPage, getPageNumber]);
+  }, [searchKey, searchQuery, currentPage]);
 
   if (loading) {
     return <div>Loading Astronomical Objects...</div>;
@@ -90,9 +90,6 @@ export default function AstronomicalObjects({ searchKey }: AstronomicalObjectsPr
   if (error) {
     return <div>Error: {error}</div>;
   }
-
-
-  const totalPages = 49;
 
   return (
     <div>
@@ -110,7 +107,7 @@ export default function AstronomicalObjects({ searchKey }: AstronomicalObjectsPr
           ))
         )}
       </div>
-      <Pagination currentPage={getPageNumber()} totalPages={totalPages} />
+      <Pagination currentPage={currentPage} totalPages={totalPages} />
     </div>
   );
-};
+}

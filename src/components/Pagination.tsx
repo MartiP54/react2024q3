@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 
+
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -30,4 +31,4 @@ export default function Pagination ({ currentPage, totalPages }: PaginationProps
   }
 
   return <div className="pagination">{pages}</div>;
-};
+}

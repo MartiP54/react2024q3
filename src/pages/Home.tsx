@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../components/header';
 import Content from '../components/content';
 import ErrorBoundary from '../components/errorBoundary';
@@ -11,21 +10,28 @@ export default function Home () {
 
   const handleSearch = (newQuery: string) => {
     setQuery(newQuery);
+    localStorage.setItem('lastSearchMarti', newQuery);
     setSearchKey(prevKey => prevKey + 1);
   };
-  
 
-    return (
-      <div className="app_wrapper">
-        <ErrorBoundary fallback={<div>Sorry for the inconvenience. An error occurred, try loading the page again.</div>}>
-          {(setError) => (
-            <>
-              <Header onSearch={handleSearch} initialQuery={query} onError={setError} />
-              <Content searchKey={searchKey} />
-            </>
-          )}
-        </ErrorBoundary>
-        </div>
-    );
+  useEffect(() => {
+    const savedQuery = localStorage.getItem('lastSearchMarti');
+    if (savedQuery) {
+      setQuery(savedQuery);
+      setSearchKey(prevKey => prevKey + 1);
+    }
+  }, [setQuery]);
 
+  return (
+    <div className="app_wrapper">
+      <ErrorBoundary fallback={<div>Sorry for the inconvenience. An error occurred, try loading the page again.</div>}>
+        {(setError) => (
+          <>
+            <Header onSearch={handleSearch} initialQuery={query} onError={setError} />
+            <Content searchKey={searchKey} searchQuery={query} />
+          </>
+        )}
+      </ErrorBoundary>
+    </div>
+  );
 }
