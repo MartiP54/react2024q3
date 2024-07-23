@@ -1,9 +1,11 @@
-// Stapi.tsx
+
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { RootState } from '../store';
 import astronomicalObjectsApi from "./astronomicalObjectsApi";
 import { setCurrentPage } from '../slice/paginationSlice';
+import { setAstronomicalObjects } from '../slice/astronomicalObjectsSlice';
 import Pagination from '../components/Pagination';
 
 interface AstronomicalObjectsProps {
@@ -23,6 +25,14 @@ export default function AstronomicalObjects({ searchQuery, currentPage }: Astron
 
   const { data, error, isFetching } = astronomicalObjectsApi.useFetchAstronomicalObjectsQuery({ searchQuery, page: currentPage });
 
+  useEffect(() => {
+    if (data) {
+      dispatch(setAstronomicalObjects(data.astronomicalObjects));
+    }
+  }, [data, dispatch]);
+
+  const storedData = useSelector((state: RootState) => state.astronomicalObjects.data);
+
   if (isFetching) {
     return <div>Loading Astronomical Objects...</div>;
   }
@@ -35,10 +45,10 @@ export default function AstronomicalObjects({ searchQuery, currentPage }: Astron
     <div>
       <h1>Astronomical Objects</h1>
       <div className="astronomical-objects-list">
-        {data && data.astronomicalObjects.length === 0 ? (
+        {storedData && storedData.length === 0 ? (
           <p>No results found</p>
         ) : (
-          data?.astronomicalObjects.map((obj) => (
+          storedData?.map((obj) => (
             <div key={obj.uid} className="astronomical-object">
               <h2>{obj.name}</h2>
               <p>Type: {obj.astronomicalObjectType}</p>

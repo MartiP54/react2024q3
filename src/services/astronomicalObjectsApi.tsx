@@ -5,7 +5,7 @@ interface Location {
   name: string;
 }
 
-interface AstronomicalObject {
+export interface AstronomicalObject {
   uid: string;
   name: string;
   astronomicalObjectType: string;

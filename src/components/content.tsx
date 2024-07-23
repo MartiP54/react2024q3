@@ -1,4 +1,4 @@
-// content.tsx
+
 import './content.css';
 import { useSelector } from 'react-redux';
 import AstronomicalObjects from '../services/Stapi';
