@@ -1,15 +1,16 @@
+// content.tsx
 import './content.css';
+import { useSelector } from 'react-redux';
 import AstronomicalObjects from '../services/Stapi';
+import { RootState } from '../store';
 
-interface MainProps {
-  searchKey: number;
-  searchQuery: string;
-}
+export default function Content() {
+  const searchQuery = useSelector((state: RootState) => state.search.query);
+  const currentPage = useSelector((state: RootState) => state.pagination.currentPage);
 
-export default function Main ({ searchKey, searchQuery }: MainProps) {
   return (
     <main className='main'>
-      <AstronomicalObjects searchKey={searchKey} searchQuery={searchQuery} />
+      <AstronomicalObjects searchQuery={searchQuery} currentPage={currentPage} />
     </main>
   );
 }

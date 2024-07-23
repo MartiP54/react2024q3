@@ -1,30 +1,34 @@
-import { useState, useEffect } from 'react';
+// Home.tsx
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/header';
 import Content from '../components/content';
 import ErrorBoundary from '../components/errorBoundary';
-import useSearchQuery from '../hooks/useSearchQuery';
+import { RootState } from '../store';
+import { setCurrentPage } from '../slice/paginationSlice';
+import { setSearchQuery } from '../slice/searchSlice';
 
-export default function Home () {
-  const [query, setQuery] = useSearchQuery('lastSearchMarti');
-  const [searchKey, setSearchKey] = useState(0);
+export default function Home() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const query = useSelector((state: RootState) => state.search.query);
 
   const handleSearch = (newQuery: string) => {
-    setQuery(newQuery);
+    dispatch(setSearchQuery(newQuery));
     localStorage.setItem('lastSearchMarti', newQuery);
-    setSearchKey(prevKey => prevKey + 1);
+    dispatch(setCurrentPage(1));
     navigate('?page=1');
   };
 
   useEffect(() => {
     const savedQuery = localStorage.getItem('lastSearchMarti');
     if (savedQuery) {
-      setQuery(savedQuery);
-      setSearchKey(prevKey => prevKey + 1);
+      dispatch(setSearchQuery(savedQuery));
+      dispatch(setCurrentPage(1));
       navigate('?page=1');
     }
-  }, [setQuery, navigate]);
+  }, [dispatch, navigate]);
 
   return (
     <div className="app_wrapper">
@@ -32,7 +36,7 @@ export default function Home () {
         {(setError) => (
           <>
             <Header onSearch={handleSearch} initialQuery={query} onError={setError} />
-            <Content searchKey={searchKey} searchQuery={query} />
+            <Content />
           </>
         )}
       </ErrorBoundary>
