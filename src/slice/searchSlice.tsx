@@ -1,4 +1,4 @@
-// slice/searchSlice.ts
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface SearchState {

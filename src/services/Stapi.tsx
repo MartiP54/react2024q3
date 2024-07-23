@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { setCurrentPage } from '../slice/paginationSlice';
 import { setAstronomicalObjects } from '../slice/astronomicalObjectsSlice';
 import { addSelectedObject, removeSelectedObject } from '../slice/selectedObjectsSlice';
 import Pagination from '../components/Pagination';
+import Flyout from '../components/Flyout';
 
 interface AstronomicalObjectsProps {
   searchQuery: string;
@@ -74,6 +76,7 @@ export default function AstronomicalObjects({ searchQuery, currentPage }: Astron
         )}
       </div>
       <Pagination currentPage={currentPage} totalPages={data?.page.totalPages || 0} />
+      {selectedObjects.length > 0 && <Flyout />}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AstronomicalObject } from '../services/astronomicalObjectsApi';
 
@@ -21,8 +22,11 @@ const selectedObjectsSlice = createSlice({
         (obj) => obj.uid !== action.payload
       );
     },
+    clearSelectedObjects(state) {
+      state.selectedObjects = [];
+    },
   },
 });
 
-export const { addSelectedObject, removeSelectedObject } = selectedObjectsSlice.actions;
+export const { addSelectedObject, removeSelectedObject, clearSelectedObjects } = selectedObjectsSlice.actions;
 export default selectedObjectsSlice.reducer;
