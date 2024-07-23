@@ -1,11 +1,11 @@
-
 import { useEffect } from 'react';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { RootState } from '../store';
-import astronomicalObjectsApi from "./astronomicalObjectsApi";
+import astronomicalObjectsApi, { AstronomicalObject } from "./astronomicalObjectsApi";
 import { setCurrentPage } from '../slice/paginationSlice';
 import { setAstronomicalObjects } from '../slice/astronomicalObjectsSlice';
+import { addSelectedObject, removeSelectedObject } from '../slice/selectedObjectsSlice';
 import Pagination from '../components/Pagination';
 
 interface AstronomicalObjectsProps {
@@ -32,6 +32,17 @@ export default function AstronomicalObjects({ searchQuery, currentPage }: Astron
   }, [data, dispatch]);
 
   const storedData = useSelector((state: RootState) => state.astronomicalObjects.data);
+  const selectedObjects = useSelector((state: RootState) => state.selectedObjects.selectedObjects);
+
+  const isSelected = (obj: AstronomicalObject) => selectedObjects.some((item: AstronomicalObject) => item.uid === obj.uid);
+
+  const handleCheckboxChange = (obj: AstronomicalObject) => {
+    if (isSelected(obj)) {
+      dispatch(removeSelectedObject(obj.uid));
+    } else {
+      dispatch(addSelectedObject(obj));
+    }
+  };
 
   if (isFetching) {
     return <div>Loading Astronomical Objects...</div>;
@@ -48,11 +59,16 @@ export default function AstronomicalObjects({ searchQuery, currentPage }: Astron
         {storedData && storedData.length === 0 ? (
           <p>No results found</p>
         ) : (
-          storedData?.map((obj) => (
+          storedData?.map((obj: AstronomicalObject) => (
             <div key={obj.uid} className="astronomical-object">
               <h2>{obj.name}</h2>
               <p>Type: {obj.astronomicalObjectType}</p>
               <p>Location: {obj.location ? obj.location.name : 'Unknown'}</p>
+              <input
+                type="checkbox"
+                checked={isSelected(obj)}
+                onChange={() => handleCheckboxChange(obj)}
+              />
             </div>
           ))
         )}

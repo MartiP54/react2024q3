@@ -5,6 +5,7 @@ import astronomicalObjectsApi from './services/astronomicalObjectsApi';
 import paginationReducer from './slice/paginationSlice';
 import searchReducer from './slice/searchSlice';
 import astronomicalObjectsReducer from './slice/astronomicalObjectsSlice';
+import selectedObjectsReducer from './slice/selectedObjectsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     pagination: paginationReducer,
     search: searchReducer,
     astronomicalObjects: astronomicalObjectsReducer,
+    selectedObjects: selectedObjectsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(astronomicalObjectsApi.middleware),
@@ -21,3 +23,4 @@ setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
