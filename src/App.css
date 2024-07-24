@@ -1,14 +1,31 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+
+:root {
+  --background-color-light: #ffffff;
+  --text-color-light: #000000;
+  --background-color-dark: #000000;
+  --text-color-dark: #ffffff;
+}
+
+.theme-light {
+  --background-color: var(--background-color-light);
+  --text-color: var(--text-color-light);
+}
+
+.theme-dark {
+  --background-color: var(--background-color-dark);
+  --text-color: var(--text-color-dark);
 }
 
 .app_wrapper {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0 auto;
+  padding-top: 4vh;
+  text-align: center;
+  min-width:99vw;
+  min-height: 96vh;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
 }
-

@@ -2,6 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5vw;
+  justify-content: center;
 }
 .astronomical-object {
   width: 12vw;

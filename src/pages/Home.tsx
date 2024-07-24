@@ -31,7 +31,6 @@ export default function Home() {
   }, [dispatch, navigate]);
 
   return (
-    <div className="app_wrapper">
       <ErrorBoundary fallback={<div>Sorry for the inconvenience. An error occurred, try loading the page again.</div>}>
         {(setError) => (
           <>
@@ -40,6 +39,5 @@ export default function Home() {
           </>
         )}
       </ErrorBoundary>
-    </div>
   );
 }
