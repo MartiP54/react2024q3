@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -31,13 +30,13 @@ export default function Home() {
   }, [dispatch, navigate]);
 
   return (
-      <ErrorBoundary fallback={<div>Sorry for the inconvenience. An error occurred, try loading the page again.</div>}>
-        {(setError) => (
-          <>
-            <Header onSearch={handleSearch} initialQuery={query} onError={setError} />
-            <Content />
-          </>
-        )}
-      </ErrorBoundary>
+    <ErrorBoundary fallback={<div>Sorry for the inconvenience. An error occurred, try loading the page again.</div>}>
+      {(setError) => (
+        <>
+          <Header onSearch={handleSearch} initialQuery={query} onError={setError} />
+          <Content />
+        </>
+      )}
+    </ErrorBoundary>
   );
 }

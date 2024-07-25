@@ -3,6 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 interface Location {
   uid: string;
   name: string;
+  astronomicalObjectType?: string;
+  location?: Location;
 }
 
 export interface AstronomicalObject {
@@ -10,6 +12,7 @@ export interface AstronomicalObject {
   name: string;
   astronomicalObjectType: string;
   location: Location | null;
+  astronomicalObjects?: AstronomicalObject[];
 }
 
 export interface AstronomicalObjectResponse {
@@ -20,6 +23,10 @@ export interface AstronomicalObjectResponse {
     pageNumber: number;
     pageSize: number;
   };
+}
+
+export interface AstronomicalObjectDetailsResponse {
+  astronomicalObject: AstronomicalObject;
 }
 
 const astronomicalObjectsApi = createApi({
@@ -37,8 +44,10 @@ const astronomicalObjectsApi = createApi({
         body: `name=${searchQuery}`,
       }),
     }),
-  })
-})
+    fetchAstronomicalObjectDetails: builder.query<AstronomicalObjectDetailsResponse, string>({
+      query: (uid) => `astronomicalObject?uid=${uid}`,
+    }),
+  }),
+});
 
-  export default astronomicalObjectsApi;
-
+export default astronomicalObjectsApi;

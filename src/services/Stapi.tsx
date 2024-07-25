@@ -1,12 +1,11 @@
-
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { RootState } from '../store';
-import astronomicalObjectsApi, { AstronomicalObject } from "./astronomicalObjectsApi";
 import { setCurrentPage } from '../slice/paginationSlice';
 import { setAstronomicalObjects } from '../slice/astronomicalObjectsSlice';
 import { addSelectedObject, removeSelectedObject } from '../slice/selectedObjectsSlice';
+import astronomicalObjectsApi, { AstronomicalObject } from "./astronomicalObjectsApi";
 import Pagination from '../components/Pagination';
 import Flyout from '../components/Flyout';
 
@@ -18,6 +17,7 @@ interface AstronomicalObjectsProps {
 export default function AstronomicalObjects({ searchQuery, currentPage }: AstronomicalObjectsProps) {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -46,6 +46,10 @@ export default function AstronomicalObjects({ searchQuery, currentPage }: Astron
     }
   };
 
+  const handleItemClick = (obj: AstronomicalObject) => {
+    navigate(`details/${obj.uid}`);
+  };
+
   if (isFetching) {
     return <div>Loading Astronomical Objects...</div>;
   }
@@ -55,28 +59,38 @@ export default function AstronomicalObjects({ searchQuery, currentPage }: Astron
   }
 
   return (
-    <div>
-      <h1>Astronomical Objects</h1>
-      <div className="astronomical-objects-list">
-        {storedData && storedData.length === 0 ? (
-          <p>No results found</p>
-        ) : (
-          storedData?.map((obj: AstronomicalObject) => (
-            <div key={obj.uid} className="astronomical-object">
-              <h2>{obj.name}</h2>
-              <p>Type: {obj.astronomicalObjectType}</p>
-              <p>Location: {obj.location ? obj.location.name : 'Unknown'}</p>
-              <input
-                type="checkbox"
-                checked={isSelected(obj)}
-                onChange={() => handleCheckboxChange(obj)}
-              />
-            </div>
-          ))
-        )}
-      </div>
-      <Pagination currentPage={currentPage} totalPages={data?.page.totalPages || 0} />
+    <div className="content-wrapper">
+      <div className="astronomical-objects-container">
       {selectedObjects.length > 0 && <Flyout />}
+        <div className="astronomical-objects-list">
+          {storedData && storedData.length === 0 ? (
+            <p>No results found</p>
+          ) : (
+            storedData?.map((obj: AstronomicalObject) => (
+              <div
+                key={obj.uid}
+                className="astronomical-object"
+                onClick={() => handleItemClick(obj)}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleItemClick(obj); }}
+                role="button"
+                tabIndex={0}
+              >
+                <h2>{obj.name}</h2>
+                <p>Type: {obj.astronomicalObjectType}</p>
+                <p>Location: {obj.location ? obj.location.name : 'Unknown'}</p>
+                <input
+                  type="checkbox"
+                  checked={isSelected(obj)}
+                  onChange={() => handleCheckboxChange(obj)}
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            ))
+          )}
+        </div>
+        <Pagination currentPage={currentPage} totalPages={data?.page.totalPages || 0} />
+      </div>
+      <Outlet />
     </div>
   );
 }
