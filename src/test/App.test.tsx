@@ -19,6 +19,7 @@ describe('App component', () => {
     expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
   });
 
+  
   it('renders NotFound component for unknown routes', () => {
     render(
       <Provider store={store}>
