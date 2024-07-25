@@ -31,6 +31,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
     project: ['./tsconfig.json', './tsconfig.app.json', './tsconfig.node.json'],
+    ignorePatterns: ['./coverage/*'],
     tsconfigRootDir: __dirname,
   },
   plugins: [
