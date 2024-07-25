@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { RootState } from '../store';
 import astronomicalObjectsApi from '../services/astronomicalObjectsApi';
 import { setSelectedObject, clearSelectedObject } from '../slice/selectedObjectSlice';
@@ -9,6 +9,7 @@ const { useFetchAstronomicalObjectDetailsQuery } = astronomicalObjectsApi;
 
 export default function AstronomicalObjectDetails() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data, error, isFetching } = useFetchAstronomicalObjectDetailsQuery(id!);
   const selectedObject = useSelector((state: RootState) => state.selectedObject.selectedObject);
@@ -21,6 +22,7 @@ export default function AstronomicalObjectDetails() {
 
   const handleClose = () => {
     dispatch(clearSelectedObject());
+    navigate('/');
   };
 
   if (isFetching) {
