@@ -1,4 +1,4 @@
-// selectedObjectSlice.test.ts
+
 import { describe, it, expect } from 'vitest';
 import selectedObjectReducer, { setSelectedObject, clearSelectedObject } from '../slice/selectedObjectSlice';
 import { AstronomicalObject } from '../services/astronomicalObjectsApi';
