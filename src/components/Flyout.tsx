@@ -38,7 +38,7 @@ export default function Flyout() {
 
   return (
     <div className="flyout">
-      <p>{selectedObjects.length} items are selected</p>
+      <p className="flyout-description">{selectedObjects.length} items are selected</p>
       <button type="button" onClick={handleUnselectAll}>Unselect all</button>
       <button type="button" onClick={handleDownload}>Download</button>
     </div>

@@ -4,16 +4,20 @@
   --text-color-light: #000000;
   --background-color-dark: #000000;
   --text-color-dark: #ffffff;
+  --border-color-dark :rgb(202, 135, 211);
+  --border-color-light :rgb(145, 167, 240);
 }
 
 .theme-light {
   --background-color: var(--background-color-light);
   --text-color: var(--text-color-light);
+  --border-color :var(--border-color-light);
 }
 
 .theme-dark {
   --background-color: var(--background-color-dark);
   --text-color: var(--text-color-dark);
+  --border-color :var(--border-color-dark);
 }
 
 .app_wrapper {
@@ -42,9 +46,16 @@
   gap: 10px;
 }
 
-.label-light, .label-dark{
+.label-light, .label-dark {
   padding: 10px;
-  border: 2px solid rgb(145, 68, 180);
+  border: 2px solid var(--border-color);;
   border-radius: 10px;
 }
 
+.astronomical-object {
+  border: 2px solid var(--border-color);
+}
+
+button {
+  background-color: var(--border-color);
+}

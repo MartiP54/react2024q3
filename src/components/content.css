@@ -11,15 +11,26 @@
   width: 12vw;
   display: flex;
   flex-direction: column;
-  border: 2px solid rgb(145, 68, 180);
 }
 
 .astronomical-object-details {
   width: 30vw;
-  border: 2px solid rgb(145, 68, 180);
+  border: 2px solid var(--border-color);
   height: 65vh;
 }
 
 .details-button {
   margin-top: 3vh;
+}
+
+.flyout {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  padding: 10px;
+}
+
+.flyout-description {
+  font-size: large;
+  font-weight: 500;
 }

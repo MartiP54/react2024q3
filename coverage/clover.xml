@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1722145045938" clover="3.2.0">
-  <project timestamp="1722145045938" name="All files">
-    <metrics statements="538" coveredstatements="456" conditionals="86" coveredconditionals="66" methods="49" coveredmethods="43" elements="673" coveredelements="565" complexity="0" loc="538" ncloc="538" packages="9" files="23" classes="23"/>
+<coverage generated="1722147426251" clover="3.2.0">
+  <project timestamp="1722147426251" name="All files">
+    <metrics statements="538" coveredstatements="457" conditionals="86" coveredconditionals="66" methods="49" coveredmethods="43" elements="673" coveredelements="566" complexity="0" loc="538" ncloc="538" packages="9" files="23" classes="23"/>
     <package name="src">
       <metrics statements="56" coveredstatements="40" conditionals="3" coveredconditionals="2" methods="3" coveredmethods="2"/>
       <file name="App.tsx" path="D:\Frontend\Progect\rss2023\REACT2024Q3\src\App.tsx">
@@ -71,9 +71,9 @@
       </file>
     </package>
     <package name="src.components">
-      <metrics statements="209" coveredstatements="182" conditionals="40" coveredconditionals="29" methods="21" coveredmethods="19"/>
+      <metrics statements="209" coveredstatements="183" conditionals="40" coveredconditionals="29" methods="21" coveredmethods="19"/>
       <file name="AstronomicalObjectDetails.tsx" path="D:\Frontend\Progect\rss2023\REACT2024Q3\src\components\AstronomicalObjectDetails.tsx">
-        <metrics statements="50" coveredstatements="25" conditionals="13" coveredconditionals="3" methods="2" coveredmethods="1"/>
+        <metrics statements="50" coveredstatements="26" conditionals="13" coveredconditionals="3" methods="2" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -109,11 +109,11 @@
         <line num="43" count="0" type="stmt"/>
         <line num="44" count="0" type="stmt"/>
         <line num="45" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
-        <line num="47" count="2" type="cond" truecount="0" falsecount="1"/>
+        <line num="46" count="2" type="cond" truecount="0" falsecount="1"/>
+        <line num="47" count="2" type="cond" truecount="0" falsecount="2"/>
         <line num="48" count="2" type="cond" truecount="0" falsecount="2"/>
         <line num="49" count="2" type="cond" truecount="0" falsecount="2"/>
-        <line num="50" count="2" type="cond" truecount="0" falsecount="2"/>
+        <line num="50" count="0" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
         <line num="52" count="0" type="stmt"/>
         <line num="53" count="0" type="stmt"/>
@@ -121,7 +121,7 @@
         <line num="55" count="0" type="stmt"/>
         <line num="56" count="0" type="stmt"/>
         <line num="57" count="0" type="stmt"/>
-        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="2" type="stmt"/>
         <line num="60" count="2" type="stmt"/>
         <line num="62" count="2" type="stmt"/>
       </file>
