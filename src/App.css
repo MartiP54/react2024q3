@@ -32,4 +32,19 @@
 
 .content-wrapper {
   display: flex;
+  justify-content: center;
 }
+
+.theme-toggle {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.label-light, .label-dark{
+  padding: 10px;
+  border: 2px solid rgb(145, 68, 180);
+  border-radius: 10px;
+}
+

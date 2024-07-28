@@ -4,8 +4,8 @@ function ThemeSelector() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div>
-      <label htmlFor="light-theme">
+    <div className="theme-toggle">
+      <label htmlFor="light-theme" className="label-light">
         <input
           type="radio"
           id="light-theme"
@@ -16,7 +16,7 @@ function ThemeSelector() {
         />
         Light
       </label>
-      <label htmlFor="dark-theme">
+      <label htmlFor="dark-theme" className="label-dark">
         <input
           type="radio"
           id="dark-theme"

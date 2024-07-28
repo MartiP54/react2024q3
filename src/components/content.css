@@ -4,9 +4,22 @@
   gap: 0.5vw;
   justify-content: center;
 }
+.astronomical-objects-container {
+  width: 60vw;
+}
 .astronomical-object {
   width: 12vw;
   display: flex;
   flex-direction: column;
   border: 2px solid rgb(145, 68, 180);
+}
+
+.astronomical-object-details {
+  width: 30vw;
+  border: 2px solid rgb(145, 68, 180);
+  height: 65vh;
+}
+
+.details-button {
+  margin-top: 3vh;
 }

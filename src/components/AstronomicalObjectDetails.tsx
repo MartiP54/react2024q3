@@ -41,7 +41,6 @@ export default function AstronomicalObjectDetails() {
 
   return (
     <div className="astronomical-object-details">
-      <button type="button" onClick={handleClose}>Close</button>
       <h2>{name}</h2>
       <p>Type: {astronomicalObjectType}</p>
       <p>Location: {location ? location.name : 'Unknown'}</p>
@@ -57,6 +56,7 @@ export default function AstronomicalObjectDetails() {
           </ul>
         </div>
       )}
+            <button className='details-button' type="button" onClick={handleClose}>Close</button>
     </div>
   );
 }
