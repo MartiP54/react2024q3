@@ -4,11 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "next dev",
+    "build": "next build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format:fix": "prettier --write \"src/**/*.+(js|jsx|ts|tsx|css|scss|json)\"",
-    "preview": "vite preview",
     "prepare": "husky install",
     "test": "vitest run --coverage"
   },
@@ -26,6 +25,7 @@
     "@reduxjs/toolkit": "^2.2.6",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
+    "next": "^14.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2",
@@ -34,6 +34,7 @@
     "vitest": "^2.0.4"
   },
   "devDependencies": {
+    "@types/node": "22.0.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/redux-mock-store": "^1.0.6",

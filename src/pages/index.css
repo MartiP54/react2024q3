@@ -47,3 +47,54 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.astronomical-objects-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5vw;
+  justify-content: center;
+}
+.astronomical-objects-container {
+  width: 60vw;
+}
+.astronomical-object {
+  width: 12vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.astronomical-object-details {
+  width: 30vw;
+  border: 2px solid var(--border-color);
+  height: 65vh;
+}
+
+.details-button {
+  margin-top: 3vh;
+}
+
+.flyout {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  padding: 10px;
+}
+
+.flyout-description {
+  font-size: large;
+  font-weight: 500;
+}
+
+.header {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  padding: 15px;
+}
+
+.pagination {
+  padding-top: 15px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
+}

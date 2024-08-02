@@ -1,29 +1,31 @@
+
+import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-import { RootState } from '../store';
-import astronomicalObjectsApi from '../services/astronomicalObjectsApi';
-import { setSelectedObject, clearSelectedObject } from '../slice/selectedObjectSlice';
+import { RootState } from '../../store';
+import astronomicalObjectsApi from '../../services/astronomicalObjectsApi';
+import { setSelectedObject, clearSelectedObject } from '../../slice/selectedObjectSlice';
 
 const { useFetchAstronomicalObjectDetailsQuery } = astronomicalObjectsApi;
 
-export default function AstronomicalObjectDetails() {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+interface DetailsProps {
+  id: string;
+}
+
+export default function Details({ id }: DetailsProps) {
   const dispatch = useDispatch();
-  const { data, error, isFetching } = useFetchAstronomicalObjectDetailsQuery(id!);
+  const { data, error, isFetching } = useFetchAstronomicalObjectDetailsQuery(id);
   const selectedObject = useSelector((state: RootState) => state.selectedObject.selectedObject);
 
   useEffect(() => {
     if (data && data.astronomicalObject) {
       dispatch(setSelectedObject(data.astronomicalObject));
     }
-  }, [data, dispatch]);
 
-  const handleClose = () => {
-    dispatch(clearSelectedObject());
-    navigate('/');
-  };
+    return () => {
+      dispatch(clearSelectedObject());
+    };
+  }, [data, dispatch]);
 
   if (isFetching) {
     return <div>Loading details...</div>;
@@ -56,7 +58,16 @@ export default function AstronomicalObjectDetails() {
           </ul>
         </div>
       )}
-            <button className='details-button' type="button" onClick={handleClose}>Close</button>
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.params as { id: string };
+
+  return Promise.resolve({
+    props: {
+      id,
+    },
+  });
+};

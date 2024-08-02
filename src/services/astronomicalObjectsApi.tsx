@@ -1,3 +1,4 @@
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 interface Location {
@@ -29,9 +30,11 @@ export interface AstronomicalObjectDetailsResponse {
   astronomicalObject: AstronomicalObject;
 }
 
+const baseQuery = fetchBaseQuery({ baseUrl: 'http://stapi.co/api/v2/rest/' });
+
 const astronomicalObjectsApi = createApi({
   reducerPath: 'astronomicalObjectsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://stapi.co/api/v2/rest/' }),
+  baseQuery,
   endpoints: (builder) => ({
     fetchAstronomicalObjects: builder.query<AstronomicalObjectResponse, { searchQuery: string; page: number }>({
       query: ({ searchQuery, page }) => ({
@@ -50,4 +53,5 @@ const astronomicalObjectsApi = createApi({
   }),
 });
 
+export { baseQuery };
 export default astronomicalObjectsApi;

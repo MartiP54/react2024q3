@@ -1,3 +1,4 @@
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { clearSelectedObjects } from '../slice/selectedObjectsSlice';
@@ -6,6 +7,7 @@ import { AstronomicalObject } from '../services/astronomicalObjectsApi';
 export default function Flyout() {
   const dispatch = useDispatch();
   const selectedObjects = useSelector((state: RootState) => state.selectedObjects.selectedObjects);
+  const downloadLinkRef = useRef<HTMLAnchorElement | null>(null);
 
   const handleUnselectAll = () => {
     dispatch(clearSelectedObjects());
@@ -26,13 +28,13 @@ export default function Flyout() {
 
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${selectedObjects.length}_astronomical_objects.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+
+      if (downloadLinkRef.current) {
+        downloadLinkRef.current.href = url;
+        downloadLinkRef.current.download = `${selectedObjects.length}_astronomical_objects.csv`;
+        downloadLinkRef.current.click();
+        URL.revokeObjectURL(url);
+      }
     }
   };
 
@@ -41,6 +43,7 @@ export default function Flyout() {
       <p className="flyout-description">{selectedObjects.length} items are selected</p>
       <button type="button" onClick={handleUnselectAll}>Unselect all</button>
       <button type="button" onClick={handleDownload}>Download</button>
+      <a ref={downloadLinkRef} href="/" style={{ display: 'none' }}>Download</a>
     </div>
   );
 }

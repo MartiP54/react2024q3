@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 import { store } from '../store';
-import AstronomicalObjectDetails from '../components/AstronomicalObjectDetails';
+import AstronomicalObjectDetails from '../pages/details/[id]';
 
 describe('AstronomicalObjectDetails', () => {
   it('renders loading state initially', () => {
