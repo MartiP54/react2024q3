@@ -1,4 +1,5 @@
 import './index.css'
+import './App.css'
 import { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from '../context/ThemeContext'

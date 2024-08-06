@@ -1,5 +1,3 @@
-
-
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../components/header';
@@ -10,7 +8,6 @@ import { setCurrentPage } from '../slice/paginationSlice';
 import { setSearchQuery } from '../slice/searchSlice';
 import { setAstronomicalObjects } from '../slice/astronomicalObjectsSlice';
 import { AstronomicalObject } from '../services/astronomicalObjectsApi';
-
 
 interface HomeProps {
   initialData: AstronomicalObject[];
@@ -59,8 +56,6 @@ export default function Home({ initialData, query }: HomeProps) {
 }
 
 export async function getServerSideProps() {
-  console.log("Fetching data on the server...");
-
   try {
     const searchQuery = '';
 
@@ -73,19 +68,14 @@ export async function getServerSideProps() {
       body: `name=${searchQuery}`,
     });
 
-    console.log("Response received:", response.status);
-
-    const data = await response.json() as ApiResponse ;
+    const data = await response.json() as ApiResponse;
 
     if (!response.ok) {
-      console.log("Response not OK");
       return { props: { initialData: [], query: searchQuery } };
     }
 
-    console.log("Returning data...", data.astronomicalObjects);
     return { props: { initialData: data.astronomicalObjects, query: searchQuery } };
   } catch (error) {
-    console.error("Error in getServerSideProps:", error);
     return { props: { initialData: [], query: '' } };
   }
 }
