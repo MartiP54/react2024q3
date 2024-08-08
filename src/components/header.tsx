@@ -3,12 +3,12 @@ import Input from './Input/Input';
 import Button from './Button/Button';
 
 interface HeaderProps {
-  onSearch: (query: string) => void;
   initialQuery: string;
   onError: (error: Error) => void;
+  onSearch: (newQuery: string) => void;
 }
 
-export default function Header({ onSearch, initialQuery, onError }: HeaderProps) {
+export default function Header({ initialQuery, onError, onSearch }: HeaderProps) {
   const [query, setQuery] = useState(initialQuery || '');
 
   useEffect(() => {

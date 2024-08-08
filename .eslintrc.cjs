@@ -43,6 +43,8 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 0,
     'react-compiler/react-compiler': 'error',
+    "react/require-default-props": "off",
+    'react/jsx-props-no-spreading': 'off',
      'react/prefer-stateless-function': 'off',
       'import/no-extraneous-dependencies': [
       'error',

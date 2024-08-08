@@ -1,65 +1,73 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { GetServerSidePropsContext } from 'next';
+import { ParsedUrlQuery } from 'querystring';
 import Header from '../components/header';
 import Content from '../components/content';
 import ErrorBoundary from '../components/errorBoundary';
-import { RootState } from '../store';
-import { setCurrentPage } from '../slice/paginationSlice';
-import { setSearchQuery } from '../slice/searchSlice';
-import { setAstronomicalObjects } from '../slice/astronomicalObjectsSlice';
-import { AstronomicalObject } from '../services/astronomicalObjectsApi';
+import { AstronomicalObject, AstronomicalObjectResponse } from '../services/astronomicalObjectsApi';
+
 
 interface HomeProps {
   initialData: AstronomicalObject[];
   query: string;
+  page: number;
+  totalPages: number;
+  selectedId?: string | null;
+  detailsData?: { astronomicalObject: AstronomicalObject } | null; 
 }
 
-interface ApiResponse {
-  astronomicalObjects: AstronomicalObject[];
+interface QueryParams extends ParsedUrlQuery {
+  searchQuery?: string;
+  page?: string;
+  id?: string;
 }
 
-export default function Home({ initialData, query }: HomeProps) {
-  const dispatch = useDispatch();
-  const storedQuery = useSelector((state: RootState) => state.search.query);
+export default function Home({ initialData, query, page, totalPages, selectedId, detailsData }: HomeProps) {
+  const router = useRouter();
 
-  const handleSearch = (newQuery: string) => {
-    dispatch(setSearchQuery(newQuery));
-    localStorage.setItem('lastSearchMarti', newQuery);
-    dispatch(setCurrentPage(1));
-  };
-
-  useEffect(() => {
-    dispatch(setAstronomicalObjects(initialData));
-    dispatch(setSearchQuery(query));
-  }, [initialData, query, dispatch]);
-
-  useEffect(() => {
-    const savedQuery = localStorage.getItem('lastSearchMarti');
-    if (savedQuery) {
-      dispatch(setSearchQuery(savedQuery));
-      dispatch(setCurrentPage(1));
+  const handleSearch = async (newQuery: string) => {
+    const newQueryString = `?searchQuery=${newQuery}&page=1`;
+    try {
+      await router.push(newQueryString);
+    } catch (error) {
+      console.error("Failed to navigate:", error);
     }
-  }, [dispatch]);
+  };
+  
+  const handleSearchWrapper = (newQuery: string) => {
+    handleSearch(newQuery).catch(error => {
+      console.error("Error in handleSearchWrapper:", error);
+    });
+  };
 
   return (
     <ErrorBoundary fallback={<div>Sorry for the inconvenience. An error occurred, try loading the page again.</div>}>
       {(setError) => (
         <div>
-          <div>
-            <Header onSearch={handleSearch} initialQuery={storedQuery} onError={setError} />
-            <Content />
-          </div>
+          <Header onSearch={handleSearchWrapper} initialQuery={query} onError={setError} />
+          <Content 
+            initialData={initialData} 
+            currentPage={page} 
+            totalPages={totalPages} 
+            searchQuery={query} 
+            selectedId={selectedId} 
+            detailsData={detailsData} 
+          />
         </div>
       )}
     </ErrorBoundary>
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: GetServerSidePropsContext<QueryParams>) {
   try {
-    const searchQuery = '';
+    const searchQuery = (context.query.searchQuery as string) || '';
+    const page = Array.isArray(context.query.page)
+  ? parseInt(context.query.page[0], 10)
+  : parseInt(context.query.page || '1', 10);
+    const selectedId = context.query.id as string || null;
 
-    const response = await fetch('http://stapi.co/api/v2/rest/astronomicalObject/search?pageNumber=0', {
+    const response = await fetch(`http://stapi.co/api/v2/rest/astronomicalObject/search?pageNumber=${page - 1}`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -68,14 +76,30 @@ export async function getServerSideProps() {
       body: `name=${searchQuery}`,
     });
 
-    const data = await response.json() as ApiResponse;
+    const data = await response.json() as AstronomicalObjectResponse;
 
     if (!response.ok) {
-      return { props: { initialData: [], query: searchQuery } };
+      return { props: { initialData: [], query: searchQuery, page, totalPages: 0 } };
     }
 
-    return { props: { initialData: data.astronomicalObjects, query: searchQuery } };
+    let detailsData: AstronomicalObjectResponse | null = null;
+
+    if (selectedId) {
+      const detailsResponse = await fetch(`http://stapi.co/api/v2/rest/astronomicalObject?uid=${selectedId}`);
+      detailsData = await detailsResponse.json() as AstronomicalObjectResponse | null;
+    }
+
+    return { 
+      props: { 
+        initialData: data.astronomicalObjects, 
+        query: searchQuery, 
+        page, 
+        totalPages: data.page.totalPages,
+        selectedId,
+        detailsData,
+      } 
+    };
   } catch (error) {
-    return { props: { initialData: [], query: '' } };
+    return { props: { initialData: [], query: '', page: 1, totalPages: 0 } };
   }
 }

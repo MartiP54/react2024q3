@@ -1,17 +1,12 @@
-import React, { useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
-import { clearSelectedObjects } from '../slice/selectedObjectsSlice';
+import React from 'react';
 import { AstronomicalObject } from '../services/astronomicalObjectsApi';
 
-export default function Flyout() {
-  const dispatch = useDispatch();
-  const selectedObjects = useSelector((state: RootState) => state.selectedObjects.selectedObjects);
-  const downloadLinkRef = useRef<HTMLAnchorElement | null>(null);
+interface FlyoutProps {
+  selectedObjects: AstronomicalObject[];
+  onUnselectAll: () => void;
+}
 
-  const handleUnselectAll = () => {
-    dispatch(clearSelectedObjects());
-  };
+export default function Flyout({ selectedObjects, onUnselectAll }: FlyoutProps) {
 
   const handleDownload = () => {
     if (selectedObjects.length > 0) {
@@ -28,22 +23,26 @@ export default function Flyout() {
 
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
-
-      if (downloadLinkRef.current) {
-        downloadLinkRef.current.href = url;
-        downloadLinkRef.current.download = `${selectedObjects.length}_astronomical_objects.csv`;
-        downloadLinkRef.current.click();
-        URL.revokeObjectURL(url);
-      }
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${selectedObjects.length}_astronomical_objects.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   };
 
   return (
     <div className="flyout">
-      <p className="flyout-description">{selectedObjects.length} items are selected</p>
-      <button type="button" onClick={handleUnselectAll}>Unselect all</button>
-      <button type="button" onClick={handleDownload}>Download</button>
-      <a ref={downloadLinkRef} href="/" style={{ display: 'none' }}>Download</a>
+      <h2>Selected Objects</h2>
+      <ul>
+        {selectedObjects.map((obj) => (
+          <li key={obj.uid}>{obj.name}</li>
+        ))}
+      </ul>
+      <button type="button" onClick={onUnselectAll}>Unselect All</button>
+      <button type="button" onClick={handleDownload}>Download CSV</button>
     </div>
   );
 }

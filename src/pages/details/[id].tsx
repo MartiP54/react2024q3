@@ -1,45 +1,21 @@
-
-import { GetServerSideProps } from 'next';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import astronomicalObjectsApi from '../../services/astronomicalObjectsApi';
-import { setSelectedObject, clearSelectedObject } from '../../slice/selectedObjectSlice';
-
-const { useFetchAstronomicalObjectDetailsQuery } = astronomicalObjectsApi;
+import { AstronomicalObject } from '../../services/astronomicalObjectsApi';
 
 interface DetailsProps {
-  id: string;
+  data: { astronomicalObject: AstronomicalObject } | null;
+  onClose: () => void;
 }
 
-export default function Details({ id }: DetailsProps) {
-  const dispatch = useDispatch();
-  const { data, error, isFetching } = useFetchAstronomicalObjectDetailsQuery(id);
-  const selectedObject = useSelector((state: RootState) => state.selectedObject.selectedObject);
-
-  useEffect(() => {
-    if (data && data.astronomicalObject) {
-      dispatch(setSelectedObject(data.astronomicalObject));
-    }
-
-    return () => {
-      dispatch(clearSelectedObject());
-    };
-  }, [data, dispatch]);
-
-  if (isFetching) {
-    return <div>Loading details...</div>;
+export default function Details({ data, onClose }: DetailsProps) {
+  if (!data || !data.astronomicalObject) {
+    return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error loading details: {JSON.stringify(error)}</div>;
-  }
-
-  if (!selectedObject) {
-    return null;
-  }
-
-  const { name, astronomicalObjectType, location, astronomicalObjects } = selectedObject;
+  const {
+    name,
+    astronomicalObjectType,
+    location,
+    astronomicalObjects,
+  } = data.astronomicalObject;
 
   return (
     <div className="astronomical-object-details">
@@ -58,16 +34,7 @@ export default function Details({ id }: DetailsProps) {
           </ul>
         </div>
       )}
+            <button type="button" onClick={onClose} className="close-button">Close</button>
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.params as { id: string };
-
-  return Promise.resolve({
-    props: {
-      id,
-    },
-  });
-};

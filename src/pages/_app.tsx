@@ -1,17 +1,15 @@
 import './index.css'
 import './App.css'
 import { AppProps } from 'next/app'
-import { Provider } from 'react-redux'
 import { ThemeProvider } from '../context/ThemeContext'
-import { store } from '../store'
+import ThemeSelector from '../components/ThemeSelector';
 
-function MyApp({ Component }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider store={store}>
-      <ThemeProvider>
-        <Component/>
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider>
+      <ThemeSelector />
+      <Component {...pageProps} />
+    </ThemeProvider>
   )
 }
 
