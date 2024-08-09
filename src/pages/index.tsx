@@ -3,7 +3,6 @@ import { GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import Header from '../components/header';
 import Content from '../components/content';
-import ErrorBoundary from '../components/errorBoundary';
 import { AstronomicalObject, AstronomicalObjectResponse } from '../services/astronomicalObjectsApi';
 
 
@@ -41,10 +40,8 @@ export default function Home({ initialData, query, page, totalPages, selectedId,
   };
 
   return (
-    <ErrorBoundary fallback={<div>Sorry for the inconvenience. An error occurred, try loading the page again.</div>}>
-      {(setError) => (
         <div>
-          <Header onSearch={handleSearchWrapper} initialQuery={query} onError={setError} />
+          <Header onSearch={handleSearchWrapper} initialQuery={query} />
           <Content 
             initialData={initialData} 
             currentPage={page} 
@@ -54,8 +51,6 @@ export default function Home({ initialData, query, page, totalPages, selectedId,
             detailsData={detailsData} 
           />
         </div>
-      )}
-    </ErrorBoundary>
   );
 }
 

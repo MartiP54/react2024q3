@@ -4,11 +4,10 @@ import Button from './Button/Button';
 
 interface HeaderProps {
   initialQuery: string;
-  onError: (error: Error) => void;
   onSearch: (newQuery: string) => void;
 }
 
-export default function Header({ initialQuery, onError, onSearch }: HeaderProps) {
+export default function Header({ initialQuery,onSearch }: HeaderProps) {
   const [query, setQuery] = useState(initialQuery || '');
 
   useEffect(() => {
@@ -23,19 +22,10 @@ export default function Header({ initialQuery, onError, onSearch }: HeaderProps)
     onSearch(query);
   };
 
-  const handleThrowError = () => {
-    try {
-      throw new Error("Test error");
-    } catch (error) {
-      onError(error as Error);
-    }
-  };
-
   return (
     <header className='header'>
       <Input value={query} onChange={handleInputChange} />
       <Button onClick={handleSearch}>Search</Button>
-      <Button onClick={handleThrowError}>Throw Error</Button>
     </header>
   );
 }
